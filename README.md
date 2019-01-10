@@ -2,5 +2,7 @@ This project involves the recognition and categorization of a particular scene f
 
 
 Using tiny image features and nearest neighbour classifier.
+
 Using SIFT features and nearest neighbour classifier.
+
 Using SIFT features and linear support vector machine classifier.
