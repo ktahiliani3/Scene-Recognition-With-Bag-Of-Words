@@ -1,0 +1,364 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: capitalize;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1>Kapil Tahiliani</h1>
+</div>
+</div>
+<div class="container">
+
+<h2> Project 4: Scene recognition with bag of words</h2>
+
+
+
+<p> This project involves the recognition and categorization of a particular scene from a given dataset of images. We start by taking tiny images as image features and then use the nearest neighbor classifier to classify the images. The tiny image features are obtained by down sampling the image to a fixed resolution which we have chosen as 16X16 for this project. In simple words, the nearest neighbor classifier classifies a test feature into a specific category by assigning it the label of the nearest training example. The second part of this project deals with taking SIFT features of the images and then classifying using a linear support vector machine. In short, the project can be divided into the following parts:  </p>
+
+<ol>
+<li>Using tiny image features and nearest neighbour classifier.</li>
+<li>Using SIFT features and nearest neighbour classifier.</li>
+<li>Using SIFT features and linear support vector machine classifier.</li>
+</ol>
+
+
+<div style="clear:both">
+<h2>Tiny Image Features</h2>
+
+<p> 	Tiny image features can be obtained from an image by resizing/downsampling the image to a lower resolution. For this project, the images have been resized to 16X16 to create the image feature. To get an image feature from the resized image, the 16X16 matrix is converted to a 256-dimensional feature vector. The accuracy of the classifier using the tiny image features can be increased slightly by normalizing the features to have a zero mean and unit length. The tiny image features is a very simple way to represent an image, but due to the resizing of the image, the high-frequency image content is discarded. Moreover, the features are not especially invariant to spatial or brightness shifts.</p>
+
+<h2>SIFT Features</h2>
+
+<p>  The SIFT features used are similar to the ones used in local feature matching. Initially, to build our vocabulary, we choose a higher step size and stack the 128-dimensional features from each of the images on top of one another and using k-means clustering we cluster the given data into predefined number of clusters. In the bag of SIFT function, we choose a considerably lower step size to ensure that almost all the image features are accounted for. For each image, we compute the 128-dimensional SIFT feature vectors and assign them to one of the clusters by finding the nearest neighbor k-means centroid for every SIFT feature. We then count the number of SIFT descriptors that fall into each cluster in our visual word vocabulary, thereby creating a histogram of the data.  </p>
+
+
+<h2>Nearest Neighbour Classifier</h2>
+
+<p> 	The nearest neighbor classifier achieves consistently high performance without a priori assumption about the distribution from which the training examples are drawn. In this project, we use the nearest neighbor classifier to classify a test feature into a particular category by finding its nearest training example. To find the nearest training example we use the L2 norm to compute the distance. For the first part of this project, we use the nearest neighbor classifier along with the tiny image features to get started. Since the tiny image features discard the high-frequency components of the image, it is not a good feature representation of the image. As a result of this, the accuracy obtained while coupling the nearest neighbor classifier with the tiny image features is a bit low. To improve this accuracy, we use 128-dimensional SIFT feature vectors coupled with the nearest neighbor classifier.    </p>
+
+<h2>Linear Support Vector Machine Classifier</h2>
+
+<p> For the final part of this project we couple the linear support vector machine classifier with the bag of SIFT feature space to get a high accuracy of scene recognition. We train a one vs. all linear SVM to operate in the bag of SIFT feature space. The 1500 training images and their labels are used to create 15 hyperplanes which partition the feature space and the test cases are categorized based on which side of the hyperplane they fall on. Since we have 15 categories and linear classifiers are inherently binary we train 15 one vs. all linear classifiers by converting the labels to binary for each of the categories. Once we have our 15 hyperplanes, we take each of the test images and evaluate them on the each of the 15 classifiers. Finally, the test images are labeled according to the classifier which returns the highest score. </p>
+
+<h2>Experimental Design</h2>
+
+<p> One of the most important aspects of machine learning is the estimate of good hyper-parameters. For this project cross-validation and validation have been performed to get a good estimate of the hyper-parameters. Also, the notebook has been run on different vocabulary sizes, and results have been reported.
+
+</p>
+
+<h3> Linear SVM Parameters</h3>
+	<p>
+		To get good hyper-parameters for the linear SVM, the 1500 training images were divided into a group of 1400 images which formed the new training set and remaining 100 images formed the new test set. The hyperplanes were computed using the new training images and were tested on the 100 test images. This process was repeated 15 times, each time randomly dividing the training set into a set of 1400 and 100 images. This was also repeated for varied values of C to get the best hyper parameter. From the experiments, it was learned that for large values of C, the optimization would choose a smaller margin hyperplane if that hyperplane does a better job of getting all the training points classified correctly. Conversely, a very small value of C will cause the optimizer to look for a larger margin separating hyperplane, even if that hyperplane misclassifies more points.
+
+	</p>
+
+
+<h3> Experiment With Different Vocabulary Sizes</h3>
+	<p>
+		The notebook was run using different vocabulary sizes, and the performance has been elaborated in the table below.
+<br>
+<br>
+<br>
+<table border=0>
+<tr>
+<th>Vocabulary Size = 50</th>
+</tr>
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="linear50.png" width="45%"/>
+<img src="knn50.png"  width="45%"/>
+</td>
+</tr>
+
+<tr>
+	<td>
+		<br>
+		<br>
+	</td>
+</tr>
+
+<tr>
+<th>Vocabulary Size = 100</th>
+</tr>
+
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="linear100.png" width="45%"/>
+<img src="knn100.png"  width="45%"/>
+</td>
+</tr>
+
+
+<tr>
+	<td>
+		<br>
+		<br>
+	</td>
+</tr>
+
+<tr>
+<th>Vocabulary Size = 200</th>
+</tr>
+
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="linear.png" width="45%"/>
+<img src="siftknn.png"  width="45%"/>
+</td>
+</tr>
+
+
+<tr>
+	<td>
+		<br>
+		<br>
+	</td>
+</tr>
+
+<tr>
+<th>Vocabulary Size = 400</th>
+</tr>
+
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="linear400.png" width="45%"/>
+<img src="knn400.png"  width="45%"/>
+</td>
+</tr>
+
+
+<tr>
+	<td>
+		<br>
+		<br>
+	</td>
+</tr>
+
+
+<tr>
+<th>Vocabulary Size = 1000</th>
+</tr>
+
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="linear1000.png" width="45%"/>
+<img src="knn1000.png"  width="45%"/>
+</td>
+</tr>
+<tr>
+	<td>
+		<br>
+		<br>
+	</td>
+</tr>
+
+
+<tr>
+<th>Vocabulary Size = 10000</th>
+</tr>
+
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="linear10000.png" width="45%"/>
+<img src="knn10000.png"  width="45%"/>
+</td>
+</tr>
+
+</table>
+
+</p>
+
+<h3> Non-Linear SVM Parameters (Extra Credit)</h3>
+<p>
+	The same process of validation and cross-validation was done for the non-linear classifier as well to get good hyper-parameters. From the experiments, it was learned that the model is very sensitive to gamma and C. The gamma parameter defines how far the influence of a single training example reaches, with low values meaning far and high values meaning close. The gamma parameters can be seen as the inverse of the radius of influence of samples selected by the model as support vectors.
+
+
+
+<h2>Non Linear SVM (Extra Credit)</h2>
+
+<p> The linear support vector machine cannot handle all sorts of data. It is only good at handling data wherein there is a clear distinction between the two sets of data points. Due to this fact, a nonlinear SVM has been implemented using the radial basis function kernel. Since the hyperplanes constructed are nonlinear, we get a better partitioning of the data points, and we observe an increase in accuracy of approximately 2%. This is due to the fact that in most of the cases a nonlinear SVM outperforms a linear SVM.  </p>
+
+
+<h2>Results</h2>
+
+To begin with, the results obtained using tiny image features coupled with the nearest neighbour classifier are pretty low. Using the SIFT features over tiny image features while using the same classifier results in a considerable improvement in the results. The linear SVM classifier coupled with the SIFT features performs even better as the linear SVM classifiers dont simply make a decision about wether an image belongs to a particular category. The prediction obtained using the nearest neighbour classifier is heavliy influenced by the frequent visual words whereas in the case of a linear SVM classifier, those dimensions of the vector are less relevant and thus it downweights them while taking a decision. The results obtained using various techniques have been elaborated in the table below.
+<br>
+<br>
+
+<table border=0>
+
+<tr>
+<td>Tiny Image Features Coupled With Nearest Neighbour Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Nearest Neighbour Classifier</td>
+</tr>
+<tr>
+<td>
+<img src="tiny.png" width="45%"/>
+<img src="siftknn.png"  width="45%"/>
+</td>
+</tr>
+<tr>
+<td>SIFT Features Coupled With Linear SVM Classifier &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp SIFT Features Coupled With Non Linear SVM Classifier(Extra Credit)</td>
+</tr>
+<tr>
+<td>
+<img src="linear.png" width="45%"/>
+<img src="nonlinear.png"  width="45%"/>
+</td>
+</tr>
+
+</table>
+
+<div style="clear:both" >
+</div>
+</body>
+</html>
